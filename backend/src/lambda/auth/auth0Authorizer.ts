@@ -7,7 +7,6 @@ import { JwtPayload } from '../../auth/JwtPayload'
 
 const logger = createLogger('auth');
 
-// Todo
 const jwksUrl = 'https://dev-sh4pbqc4.us.auth0.com/.well-known/jwks.json'
 
 export const handler = async (
@@ -61,7 +60,6 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
     const token = getToken(authHeader)
     const res = await Axios.get(jwksUrl);
 
-    // You can read more about how to do this here: https://auth0.com/blog/navigating-rs256-and-jwks/
     const pemData = res['data']['keys'][0]['x5c'][0]
     const cert = `-----BEGIN CERTIFICATE-----\n${pemData}\n-----END CERTIFICATE-----`
 
@@ -70,7 +68,6 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
     logger.error('Fail to authenticate', err)
   }
 }
-
 function getToken(authHeader: string): string {
   if (!authHeader) throw new Error('No authentication header')
 
