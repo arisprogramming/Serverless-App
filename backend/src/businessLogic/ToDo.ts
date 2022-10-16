@@ -5,17 +5,16 @@ import {UpdateTodoRequest} from "../requests/UpdateTodoRequest";
 import {TodoUpdate} from "../models/TodoUpdate";
 import {ToDoAccess} from "../dataLayer/ToDoAccess";
 
-const uuidv4 = require('uuid/v4');
+const uidv4 = require('uid/v4');
 const toDoAccess = new ToDoAccess();
 
 export async function getAllToDo(jwtToken: string): Promise<TodoItem[]> {
     const userId = parseUserId(jwtToken);
     return toDoAccess.getAllToDo(userId);
 }
-
 export function createToDo(createTodoRequest: CreateTodoRequest, jwtToken: string): Promise<TodoItem> {
     const userId = parseUserId(jwtToken);
-    const todoId =  uuidv4();
+    const todoId =  uidv4();
     const s3BucketName = process.env.S3_BUCKET_NAME;
     
     return toDoAccess.createToDo({
@@ -27,7 +26,6 @@ export function createToDo(createTodoRequest: CreateTodoRequest, jwtToken: strin
         ...createTodoRequest,
     });
 }
-
 export function updateToDo(updateTodoRequest: UpdateTodoRequest, todoId: string, jwtToken: string): Promise<TodoUpdate> {
     const userId = parseUserId(jwtToken);
     return toDoAccess.updateToDo(updateTodoRequest, todoId, userId);
